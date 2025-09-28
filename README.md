@@ -1,5 +1,10 @@
 # A Little Bday Quest
 
+## IF YOU ARE PLANNING TO PLAY THIS GAME FIRST, DON'T READ THIS README
+
+
+
+
 A quirky, puzzle-driven 2D adventure game built with Pygame.  
 Explore rooms, collect keys, read notes, unlock doors, and solve a portal puzzle to finish your quest!
 
