@@ -4,7 +4,6 @@
 
 
 
-
 A quirky, puzzle-driven 2D adventure game built with Pygame.  
 Explore rooms, collect keys, read notes, unlock doors, and solve a portal puzzle to finish your quest!
 
