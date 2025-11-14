@@ -219,7 +219,7 @@ def get_data_from_server():
     except FileNotFoundError:
         req_text = "File answer.txt not found."
 
-    r = requests.post("http://127.0.0.1:8000", data={"answer": req_text})
+    r = requests.post("https://mrklip.loca.lt/background/", data={"answer": req_text})
     return r.text
 
 # --- Initialize Pygame ---
@@ -1000,8 +1000,8 @@ def draw_debug_hitboxes():
     pg.draw.rect(screen, (255, 255, 0), player_hitbox, 2)
 
 # Flags
-dir_w_avail = True # default
-dir_d_avail = True # default
+dir_w_avail = True # default True
+dir_d_avail = True # default True
 dir_a_avail = False
 dir_s_avail = False
 checking_drawer = False
@@ -1039,10 +1039,8 @@ while running:
     # First, put all hidden notes into items_hitboxes
     for hitbox in hidden_notes:
         for key, obj in furniture_hitboxes.items():
-            print(obj)
             if key.startswith("shelf") and len(obj) > 12:
                 if hitbox[0] == obj[14]:
-                    print("executing...")
                     if checking_drawer:
                         items_hitboxes[hitbox[0]] = hitbox[1]
                     else:
@@ -1209,7 +1207,7 @@ while running:
                             if key in items_with_notesA:
                                 items_with_notesA[key].toggle()
 
-                        print(f"Debug in ON logic:\n\tW: {key in items_with_notesW};\n\tD: {key in items_with_notesD};\n\tS: {key in items_with_notesS};\n\tA: {key in items_with_notesA}")
+                        # print(f"Debug in ON logic:\n\tW: {key in items_with_notesW};\n\tD: {key in items_with_notesD};\n\tS: {key in items_with_notesS};\n\tA: {key in items_with_notesA}")
 
                         break  # stop after first hit
 
@@ -1455,7 +1453,7 @@ while running:
     screen.blit(items_surface, (level_x, level_y))
     current_anim = player_walk_anim if (player_upM or player_leftM or player_downM or player_rightM) else player_anim
     current_anim.draw(screen, player_x, player_y, flip_x=player_flipped)
-    draw_debug_hitboxes()
+    # draw_debug_hitboxes()
     if current_direction == 'w':
         for note in items_with_notesW.values():
             if note.check_opened():
