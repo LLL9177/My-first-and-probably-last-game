@@ -197,7 +197,7 @@ def portal_logic(save_player=True, data_from_request="SOME_SECRET_DATA_FROM_POST
     if save_player and valid:
         msg = f"Your answer is correct. Here is your data: {data_from_request}"
     else:
-        msg = "Please press ESC to leave the game, and create an answer.txt where the content should be"
+        msg = "Do not leave the game and create an answer.txt where the content should be"
 
     # --- wrap text into lines ---
     wrapped = textwrap.wrap(msg, width=60)
