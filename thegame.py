@@ -951,7 +951,7 @@ items_with_notesW = {
     "hidden_note2": Note(screen, "Literally changed my UI to German everywhere."),
     "item_note9": Note(screen, "You got the dud hahahah :)\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\tQUICK"),
     "hidden_note7": Note(screen, "Only UP - is a game where while you are playing, you might just sell your pc to the window."), # FIRST DIRECTION
-    "item_note8": Note(screen, "Try to press left-arrow key now.\n\n\n\n\n\t\t\t\tCOME ON! ESCAPE NOW!!!\n\nGrap the key in the tutorial room. And please hurry up unitll they get there!!")
+    "item_note8": Note(screen, "Try to press left-arrow key now.\n\n\n\n\n\t\t\t\tCOME ON! ESCAPE NOW!!!\n\nGrab the key in the tutorial room. And please hurry up unitll they get there!!")
 }
 
 items_with_notesD = {
@@ -959,19 +959,19 @@ items_with_notesD = {
     "hidden_note2": Note(screen, "Literally changed my UI to German everywhere."),
     "item_note6": Note(screen, "Monsters don't care about you changing dimensions."),
     "hidden_note7": Note(screen, "Only UP - is a game where while you are playing, you might just sell your pc to the window."),
-    "item_note8": Note(screen, "Try to press left-arrow key now.\n\n\n\n\n\t\t\t\tCOME ON! ESCAPE NOW!!!\n\nGrap the key in the tutorial room. And please hurry up unitll they get there!!")
+    "item_note8": Note(screen, "Try to press left-arrow key now.\n\n\n\n\n\t\t\t\tCOME ON! ESCAPE NOW!!!\n\nGrab the key in the tutorial room. And please hurry up unitll they get there!!")
 }
 
 items_with_notesS = {
     "item_note7": Note(screen, "00110111 01000001 00100000 00110110 01000110 00100000 00110110 00110111 00100000 00110110 00111000 00100000 00110010 00110000 00100000 00110010 01000100 00100000 00110010 00110000 00100000 00110110 00110110 00100000 00110111 00110111 00100000 00110111 00110101 00100000 00110111 00110110 00100000 00110110 00111000"),
     "hidden_note7": Note(screen, "Only UP - is a game where while you are playing, you might just sell your pc to the window."),
-    "item_note8": Note(screen, "Try to press left-arrow key now.\n\n\n\n\n\t\t\t\tCOME ON! ESCAPE NOW!!!\n\nGrap the key in the tutorial room. And please hurry up unitll they get there!!"),
+    "item_note8": Note(screen, "Try to press left-arrow key now.\n\n\n\n\n\t\t\t\tCOME ON! ESCAPE NOW!!!\n\nGrab the key in the tutorial room. And please hurry up unitll they get there!!"),
     "hidden_note2": Note(screen, "Literally changed my UI to German everywhere.")
 }
 
 items_with_notesA = {
     "hidden_note7": Note(screen, "Only UP - is a game where while you are playing, you might just sell your pc to the window."),
-    "item_note8": Note(screen, "Try to press left-arrow key now.\n\n\n\n\n\t\t\t\tCOME ON! ESCAPE NOW!!!\n\nGrap the key in the tutorial room. And please hurry up unitll they get there!!"),
+    "item_note8": Note(screen, "Try to press left-arrow key now.\n\n\n\n\n\t\t\t\tCOME ON! ESCAPE NOW!!!\n\nGrab the key in the tutorial room. And please hurry up unitll they get there!!"),
     "hidden_note2": Note(screen, "Literally changed my UI to German everywhere.")
 }
 
@@ -1480,6 +1480,40 @@ while running:
                 portal_surf = portal_logic(True, req_text)
                 portal_rect = portal_surf.get_rect(midtop=(screen.get_width() // 2, 0))
                 screen.blit(portal_surf, portal_rect)
+
+    # --- Interaction hints ---
+    hint_font = pg.font.SysFont("Arial", 28)
+    hint_text = None
+
+    # Check NOTE hitboxes
+    for key, obj_list in items_hitboxes.items():
+        if player_hitbox.colliderect(obj_list[0].move(level_x, level_y)):
+            if current_direction == 'w' and key in items_with_notesW:
+                hint_text = "Press E to open the note"
+            elif current_direction == 'd' and key in items_with_notesD:
+                hint_text = "Press E to open the note"
+            elif current_direction == 's' and key in items_with_notesS:
+                hint_text = "Press E to open the note"
+            elif current_direction == 'a' and key in items_with_notesA:
+                hint_text = "Press E to open the note"
+            if hint_text:
+                break
+
+    # Check DOOR hitboxes (only if no note hint already)
+    if not hint_text:
+        for key, obj in furniture_hitboxes.items():
+            if key.startswith("door"):
+                door_hitbox = obj[0]
+                door_available = obj[3] or current_door_avail
+                if player_hitbox.colliderect(door_hitbox.move(level_x, level_y)) and door_available:
+                    hint_text = "Press E to open the door"
+                    break
+
+    # Draw hint if exists
+    if hint_text:
+        hint_surf = hint_font.render(hint_text, True, (255, 255, 255))
+        hint_rect = hint_surf.get_rect(midbottom=(screen.get_width() // 2, screen.get_height() - 40))
+        screen.blit(hint_surf, hint_rect)
 
     pg.display.flip()
 
